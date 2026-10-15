@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>God View · Puja Hopping Squad</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=DM+Sans:opsz,wght@9..40,400;9..40,700&display=swap" rel="stylesheet">
+<style>
+:root{--cream:#F6EEDD;--paper:#FFFBF2;--ink:#17130F;--ink2:#5B5047;--red:#D62718;--gold:#F3B230;--leaf:#2F7D4F;--line:2px solid var(--ink)}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font:15px/1.45 "DM Sans",system-ui,sans-serif}
+h1,h2,h3{font-family:"Bricolage Grotesque","Arial Black",sans-serif;font-weight:800;margin:0;letter-spacing:-.01em}
+button,input,select{font:inherit;color:inherit}
+.top{position:sticky;top:0;z-index:5;background:var(--red);color:var(--paper);border-bottom:var(--line);padding:10px 16px;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.top h1{font-size:20px;text-transform:uppercase}.top small{display:block;font-size:12px;opacity:.85;font-weight:700}
+.wrap{max-width:1300px;margin:0 auto;padding:16px}
+.btn{border:var(--line);border-radius:10px;background:var(--paper);color:var(--ink);padding:8px 14px;font-weight:700;cursor:pointer;box-shadow:2px 2px 0 var(--ink)}
+.btn.gold{background:var(--gold)}.btn:disabled{opacity:.5}
+.card{background:var(--paper);border:var(--line);border-radius:14px;box-shadow:3px 3px 0 var(--ink);padding:14px;margin-bottom:16px}
+.stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:16px}
+.stat{background:var(--paper);border:var(--line);border-radius:12px;padding:10px;text-align:center}
+.stat b{display:block;font:800 30px/1 "Bricolage Grotesque",sans-serif;font-variant-numeric:tabular-nums}.stat span{font-size:12px;font-weight:700;color:var(--ink2)}
+.stat.hot{background:var(--gold)}
+.grid2{display:grid;gap:16px}@media(min-width:900px){.grid2{grid-template-columns:1fr 1.6fr}}
+table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:7px 8px;border-bottom:1px solid rgba(23,19,15,.15);vertical-align:top}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink2)}.num{text-align:right;font-variant-numeric:tabular-nums}
+.tw{overflow-x:auto}
+.person{display:grid;grid-template-columns:1fr auto;gap:6px 12px;padding:12px 0;border-bottom:2px dashed rgba(23,19,15,.2)}
+.person:last-child{border-bottom:0}.person .ans{grid-column:1/-1;font-size:14px;color:var(--ink2)}.person .ans b{color:var(--ink)}
+.thumbs{grid-column:1/-1;display:flex;gap:6px;flex-wrap:wrap}.thumbs img{width:64px;height:64px;object-fit:cover;border:1.5px solid var(--ink);border-radius:6px;cursor:pointer;background:#222}
+.pts{font:800 22px "Bricolage Grotesque",sans-serif}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 12px}.chip{border:var(--line);border-radius:999px;background:var(--paper);padding:4px 12px;font-weight:700;font-size:13px;cursor:pointer}.chip[aria-pressed=true]{background:var(--ink);color:var(--paper)}
+.feed{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.sub{background:#fff;border:var(--line);border-radius:10px;overflow:hidden;font-size:13px}
+.sub .m{aspect-ratio:1;background:#222;position:relative;cursor:pointer}.sub .m img{width:100%;height:100%;object-fit:cover}
+.sub .m .v{position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-size:28px;text-shadow:0 2px 6px #000}
+.sub .b{padding:8px}.tag{display:inline-block;border-radius:999px;padding:1px 8px;font-size:11px;font-weight:700;border:1.5px solid var(--ink)}
+.approved{background:#cfe9d7}.pending,.checking{background:var(--gold)}.rejected{background:#f2c4bf}
+.lb{position:fixed;inset:0;background:rgba(10,8,6,.93);display:flex;align-items:center;justify-content:center;z-index:20;padding:20px;cursor:zoom-out}.lb img,.lb video{max-width:100%;max-height:100%}
+.login{max-width:360px;margin:15vh auto;padding:0 16px}.login input{width:100%;padding:12px;border:var(--line);border-radius:10px;margin:10px 0}
+.muted{color:var(--ink2)}#upd{font-size:12px}
+</style></head><body>
+<div id="app"></div>
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+<script>
+const URL_="https://bjoezpgycugchrjpzwpx.supabase.co",KEY="sb_publishable_fKUrs_kOYBHLx-g9UqWDtQ_ODkJOwLq";
+const MEDIA=p=>p?`${URL_}/storage/v1/object/public/media/${p}`:"";
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const P={pandal_nerd:"🪔 Pandal Nerd",photographer:"📸 Photographer",foodie:"🍜 Foodie",social_butterfly:"🗣 Social Butterfly",chaos:"🪩 Chaos",vibes:"😴 Here for the vibes"};
+let pin=null,D=null,filter="all",busy=false;try{pin=sessionStorage.getItem("phs_god")}catch(e){}
+const $=s=>document.querySelector(s);
+async function rpc(fn,args){const r=await fetch(`${URL_}/rest/v1/rpc/${fn}`,{method:"POST",headers:{apikey:KEY,"Content-Type":"application/json"},body:JSON.stringify(args)});const j=await r.json();if(!r.ok)throw new Error(j.message||"NETWORK");return j}
+function login(){$("#app").innerHTML=`<div class="login"><h1>God View</h1><p class="muted">Everything from Puja Hopping Squad 2026 on one page. Hosts only.</p><form id="lf"><input type="password" id="pw" placeholder="Host passcode" autocomplete="current-password" required><button class="btn gold" style="width:100%">Open</button></form><p id="err" style="color:var(--red)"></p></div>`;
+$("#lf").onsubmit=async e=>{e.preventDefault();const v=$("#pw").value;let ok=false;try{ok=await rpc("host_login",{p_pin:v})}catch(e){$("#err").textContent="No signal, or the database is asleep. Try again in a minute.";return}if(!ok){$("#err").textContent="Wrong passcode";return}pin=v;try{sessionStorage.setItem("phs_god",v)}catch(e){}load()}}
+async function load(){try{D=await rpc("host_overview",{p_pin:pin})}catch(e){if(String(e.message).includes("NOT_HOST")){pin=null;return login()}if(!D){$("#app").innerHTML=`<div class="login"><h2>Can't reach the database</h2><p>It may be asleep. Ask Claude to wake it, then refresh.</p></div>`}return}draw()}
+const nm=id=>D.attendees.find(a=>a.id===id)?.name||"?";
+const thumb=s=>MEDIA(s.media_type==="video"?s.thumb_path:s.media_path);
+const when=t=>new Date(t).toLocaleString("en-IN",{day:"numeric",month:"short",hour:"numeric",minute:"2-digit"});
+function draw(){if(busy)return;const st=D.stats,n=st.checked_in||0,subs=D.submissions,pend=subs.filter(s=>s.status==="pending"||s.status==="checking").length;
+const people=D.attendees.slice().sort((a,b)=>b.score-a.score);
+const mine=id=>subs.filter(s=>s.attendee_id===id);
+const fsubs=subs.filter(s=>filter==="all"||(filter==="quest"?s.kind==="quest":filter==="moment"?s.kind==="moment":s.status===filter||(filter==="pending"&&s.status==="checking")));
+$("#app").innerHTML=`<div class="top"><div><h1>Puja Hopping Squad · God View</h1><small id="upd">Live · updated ${new Date().toLocaleTimeString("en-IN")}</small></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn gold" id="dl">⬇ Download everything (.zip)</button><button class="btn" id="out">Lock</button></div></div>
+<div class="wrap">
+<div class="stats">
+<div class="stat"><b>${n}</b><span>checked in</span></div>
+<div class="stat"><b>${n?Math.round(st.played/n*100):0}%</b><span>did ≥1 side quest</span></div>
+<div class="stat"><b>${st.quests_done}</b><span>side quests done</span></div>
+<div class="stat"><b>${n?(st.quests_done/n).toFixed(1):0}</b><span>quests per person</span></div>
+<div class="stat"><b>${st.photos}</b><span>memories</span></div>
+<div class="stat"><b>${st.people_in_photos}</b><span>people tagged in photos</span></div>
+<div class="stat ${pend?"hot":""}"><b>${pend}</b><span>waiting for review</span></div>
+</div>
+<div class="grid2">
+<div class="card"><h2 style="margin-bottom:8px">🏆 Leaderboard</h2><div class="tw"><table><tr><th>#</th><th>Name</th><th class="num">Quests</th><th class="num">Points</th></tr>
+${people.map((a,i)=>`<tr><td>${i+1}</td><td><b>${esc(a.name)}</b><br><span class="muted">${esc(a.what_i_do)}</span></td><td class="num">${mine(a.id).filter(s=>s.kind==="quest"&&s.status==="approved").length}</td><td class="num"><b>${a.score}</b>${a.score_adjust?`<br><span class="muted">(${a.score_adjust>0?"+":""}${a.score_adjust} bonus)</span>`:""}</td></tr>`).join("")||`<tr><td colspan=4 class="muted">Nobody yet.</td></tr>`}
+</table></div></div>
+<div class="card"><h2 style="margin-bottom:4px">🫂 Everyone</h2>
+${people.map(a=>{const ms=mine(a.id).filter(s=>s.status==="approved");const met=[...new Set([...ms.flatMap(s=>s.tagged||[]),...subs.filter(s=>s.status==="approved"&&(s.tagged||[]).includes(a.id)).map(s=>s.attendee_id)])].map(nm);
+return `<div class="person"><div><h3>${esc(a.name)} <span class="muted" style="font:400 14px 'DM Sans'">· ${esc(a.what_i_do)}${a.personality?" · "+P[a.personality]:""}</span></h3></div><div class="pts">${a.score}</div>
+<div class="ans">${[["Obsessed with",a.obsessed],["Weirdest habit",a.habit],["Surprisingly good at",a.good_at],["Ask me about",a.ask_me]].filter(x=>x[1]).map(x=>`<b>${x[0]}:</b> ${esc(x[1])}`).join(" · ")||"<i>No fun answers</i>"}${met.length?`<br><b>Met:</b> ${esc(met.join(", "))}`:""}<br><span>Checked in ${when(a.created_at)}</span></div>
+${ms.length?`<div class="thumbs">${ms.map(s=>`<img loading="lazy" src="${thumb(s)}" data-open="${s.id}" alt="">`).join("")}</div>`:""}</div>`}).join("")||`<p class="muted">Nobody yet.</p>`}
+</div></div>
+<div class="card"><h2 style="margin-bottom:10px">📸 Every submission <span class="muted" style="font:400 14px 'DM Sans'">(${subs.length})</span></h2>
+<div class="chips">${[["all","All"],["approved","Approved"],["pending","Waiting"],["rejected","Rejected"],["quest","Side quests"],["moment","Puja Moments"]].map(([k,l])=>`<button class="chip" data-f="${k}" aria-pressed="${filter===k}">${l}</button>`).join("")}</div>
+<div class="feed">${fsubs.map(s=>`<div class="sub"><div class="m" data-open="${s.id}"><img loading="lazy" src="${thumb(s)}" alt="">${s.media_type==="video"?'<div class="v">▶</div>':""}</div>
+<div class="b"><b>${esc(s.attendee_name)}</b> <span class="tag ${s.status}">${s.status}</span>${s.featured?" ⭐":""}${s.hidden?" 🙈":""}<br>
+${s.kind==="quest"?`⚡ ${esc(s.challenge_text)} <b>${s.status==="approved"?"+"+s.points:""}</b>`:`📸 ${esc(s.moment_text)}`}
+${s.caption?`<br><i>"${esc(s.caption)}"</i>`:""}${s.tagged?.length?`<br>With: ${esc(s.tagged.map(nm).join(", "))}`:""}
+${s.ai_verdict?`<br><span class="muted">🤖 ${s.ai_verdict} ${Math.round((s.ai_confidence||0)*100)}%${s.ai_reason?" · "+esc(s.ai_reason):""}</span>`:""}
+<br><span class="muted">${when(s.created_at)}</span></div></div>`).join("")||`<p class="muted">Nothing here yet.</p>`}</div></div>
+</div>`;
+$("#out").onclick=()=>{try{sessionStorage.removeItem("phs_god")}catch(e){}pin=null;login()};
+$("#dl").onclick=backup;
+document.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{filter=b.dataset.f;draw()});
+document.querySelectorAll("[data-open]").forEach(el=>el.onclick=()=>{const s=subs.find(x=>x.id===el.dataset.open);const lb=document.createElement("div");lb.className="lb";lb.innerHTML=s.media_type==="video"?`<video src="${MEDIA(s.media_path)}" controls autoplay playsinline></video>`:`<img src="${MEDIA(s.media_path)}" alt="">`;lb.onclick=e=>{if(e.target===lb)lb.remove()};document.body.appendChild(lb)})}
+const csv=rows=>rows.map(r=>r.map(v=>{v=v==null?"":String(v);return /[",\n]/.test(v)?`"${v.replace(/"/g,'""')}"`:v}).join(",")).join("\n");
+const safe=s=>String(s||"").replace(/[^\w\- ]+/g,"").trim().replace(/\s+/g,"-").slice(0,40)||"x";
+async function backup(){const btn=$("#dl");busy=true;btn.disabled=true;try{
+const z=new JSZip(),subs=D.submissions,stamp=new Date().toISOString().slice(0,16).replace(/[:T]/g,"-");
+const people=D.attendees.slice().sort((a,b)=>b.score-a.score);
+z.file("people.csv",csv([["Rank","Name","What they do","Obsessed with","Weirdest habit","Surprisingly good at","Ask me about","Personality","Points","Bonus","Checked in"],...people.map((a,i)=>[i+1,a.name,a.what_i_do,a.obsessed,a.habit,a.good_at,a.ask_me,P[a.personality]||"",a.score,a.score_adjust,a.created_at])]));
+const files=[];subs.forEach((s,i)=>{const ext=(s.media_path.split(".").pop()||"jpg");const f=`${s.status==="approved"?"photos":"not-approved"}/${String(i+1).padStart(3,"0")}_${safe(s.attendee_name)}_${s.kind==="quest"?"quest":"moment"}.${ext}`;files.push([s,f])});
+z.file("submissions.csv",csv([["File","Person","Type","Side quest / Moment","Status","Points","Caption","Tagged","AI verdict","AI confidence","AI note","Featured","Hidden","Time","Online link"],...files.map(([s,f])=>[f,s.attendee_name,s.kind,s.kind==="quest"?s.challenge_text:s.moment_text,s.status,s.points,s.caption,(s.tagged||[]).map(nm).join("; "),s.ai_verdict,s.ai_confidence,s.ai_reason,s.featured,s.hidden,s.created_at,MEDIA(s.media_path)])]));
+const st=D.stats;z.file("summary.txt",`Puja Hopping Squad 2026 — backup ${new Date().toLocaleString("en-IN")}\n\nChecked in: ${st.checked_in}\nPlayed at least one side quest: ${st.played}\nSide quests completed: ${st.quests_done}\nMemories: ${st.photos}\nPeople tagged in photos: ${st.people_in_photos}\n\nTop 10:\n${people.slice(0,10).map((a,i)=>`${i+1}. ${a.name} — ${a.score}`).join("\n")}\n`);
+let done=0;for(const [s,f] of files){btn.textContent=`⬇ Packing ${++done}/${files.length}…`;try{const r=await fetch(MEDIA(s.media_path));if(r.ok)z.file(f,await r.blob())}catch(e){}}
+btn.textContent="⬇ Zipping…";const blob=await z.generateAsync({type:"blob"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`puja-hopping-squad-2026-backup-${stamp}.zip`;document.body.appendChild(a);a.click();a.remove();
+}catch(e){alert("Backup failed. Check your signal and try again.")}finally{busy=false;btn.disabled=false;btn.textContent="⬇ Download everything (.zip)"}}
+pin?load():login();setInterval(()=>{if(pin&&D&&!document.hidden&&!document.querySelector(".lb"))load()},15000);
+</script></body></html>
